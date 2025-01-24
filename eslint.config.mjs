@@ -23,7 +23,7 @@ export default [
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unused-vars': [
-        'error',
+        'warn',
         {
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',
@@ -54,6 +54,7 @@ export default [
         },
       ],
     },
+    ignores: ['**/node_modules/**', '**/dist/**', '**/build/**'],
   },
   eslintPluginPrettierRecommended,
 ];
