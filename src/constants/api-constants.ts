@@ -6,6 +6,7 @@ export const API_BASE_URL = 'https://take-home-test-api.nutech-integrasi.com';
 export const API_ENDPOINTS = {
   auth: {
     login: '/login',
+    register: '/registration',
   },
 };
 

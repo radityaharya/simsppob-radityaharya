@@ -1,14 +1,19 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Link } from 'react-router-dom';
-import { AtSign, User, Lock } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { AtSign, User, Lock, AlertCircle, X } from 'lucide-react';
 import { AuthSchemas } from '~/types/schemas/membership';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { SecretInput } from '@/components/ui/secret-input';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { AuthLayout } from './components/AuthLayout';
+import { useAppDispatch, useAppSelector } from '@/store/reducers/store';
+import { registerUser } from '@/store/actions/thunkActions';
+import { Card, CardContent } from '@/components/ui/card';
+import { clearError } from '@/store/reducers/auth';
+import React from 'react';
 
 type RegisterFormData = z.infer<typeof AuthSchemas.registration.body> & {
   confirm_password: string;
@@ -24,6 +29,9 @@ const registerSchema = AuthSchemas.registration.body
   });
 
 export default function RegisterPage() {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { loading, error } = useAppSelector(state => state.auth);
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -35,13 +43,41 @@ export default function RegisterPage() {
     },
   });
 
+  React.useEffect(() => {
+    const subscription = form.watch(() => {
+      if (error) {
+        dispatch(clearError());
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [dispatch, error, form]);
+
+  React.useEffect(() => {
+    return () => {
+      dispatch(clearError());
+    };
+  }, [dispatch]);
+
   async function onSubmit(data: RegisterFormData) {
-    // TODO: Implement registration logic
-    console.log(data);
+    try {
+      const { confirm_password, ...registrationData } = data;
+      const result = await dispatch(registerUser(registrationData)).unwrap();
+      navigate('/auth/login');
+    } catch (err) {
+      // Error is handled by redux
+    }
   }
 
   return (
-    <AuthLayout title="Lengkapi data untuk\nmembuat akun">
+    <AuthLayout
+      title={
+        <>
+          Lengkapi data untuk
+          <br />
+          membuat akun
+        </>
+      }
+    >
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -183,9 +219,10 @@ export default function RegisterPage() {
           <Button
             type="submit"
             className="w-full bg-red-500 hover:bg-red-600"
-            aria-label="Submit registration form"
+            disabled={loading}
+            aria-label={loading ? 'Registering...' : 'Register'}
           >
-            Registrasi
+            {loading ? 'Loading...' : 'Registrasi'}
           </Button>
 
           <div className="text-center text-xs font-medium mt-4" role="contentinfo">
@@ -196,6 +233,27 @@ export default function RegisterPage() {
           </div>
         </form>
       </Form>
+      {error && (
+        <Card
+          className="border-red-200 bg-red-50 w-[90%] absolute bottom-4 left-1/2 -translate-x-1/2"
+          role="alert"
+          aria-live="polite"
+        >
+          <CardContent className="p-4 flex items-center justify-between text-red-600">
+            <div className="flex items-center space-x-2">
+              <AlertCircle className="h-4 w-4" />
+              <p className="text-sm">{error}</p>
+            </div>
+            <button
+              onClick={() => dispatch(clearError())}
+              className="text-red-600 hover:text-red-700"
+              aria-label="Close error message"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </CardContent>
+        </Card>
+      )}
     </AuthLayout>
   );
 }

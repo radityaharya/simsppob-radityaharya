@@ -62,7 +62,15 @@ export default function LoginPage() {
   }
 
   return (
-    <AuthLayout title="Masuk atau buat akun\nuntuk memulai">
+    <AuthLayout
+      title={
+        <>
+          Masuk atau buat akun
+          <br />
+          untuk memulai
+        </>
+      }
+    >
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

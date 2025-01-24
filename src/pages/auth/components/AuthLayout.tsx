@@ -3,7 +3,7 @@ import { AuthIllustration } from './AuthIllustration';
 
 interface AuthLayoutProps {
   children: React.ReactNode;
-  title: string;
+  title: React.ReactNode;
 }
 
 export function AuthLayout({ children, title }: AuthLayoutProps) {

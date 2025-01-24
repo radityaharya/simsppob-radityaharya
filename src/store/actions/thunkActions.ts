@@ -38,3 +38,34 @@ export const loginUser = createAsyncThunk<
     return rejectWithValue('An unexpected error occurred');
   }
 });
+
+export const registerUser = createAsyncThunk<
+  void,
+  z.infer<typeof AuthSchemas.registration.body>,
+  { state: RootState; rejectValue: string }
+>('auth/register', async (registrationData, { rejectWithValue }) => {
+  try {
+    const response = await apiClient.post(API_ENDPOINTS.auth.register, registrationData);
+    const validated = AuthSchemas.registration.response.parse(response.data);
+
+    if (validated.status !== 0) {
+      return rejectWithValue(validated.message);
+    }
+
+    return;
+  } catch (error: any) {
+    if (axios.isAxiosError(error)) {
+      const responseData = error.response?.data;
+      if (responseData?.message) {
+        return rejectWithValue(responseData.message);
+      }
+      return rejectWithValue('Registration failed - no server response');
+    }
+
+    if (error instanceof z.ZodError) {
+      return rejectWithValue('Invalid server response format');
+    }
+
+    return rejectWithValue('An unexpected error occurred during registration');
+  }
+});

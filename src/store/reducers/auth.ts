@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AuthState } from '../../types/auth';
-import { loginUser } from '../actions/thunkActions';
+import { loginUser, registerUser } from '../actions/thunkActions';
 
 const initialState: AuthState = {
   isAuthenticated: false,
@@ -47,6 +47,18 @@ const authSlice = createSlice({
         state.error = (action.payload as string) || 'Login failed';
         state.isAuthenticated = false;
         state.token = null;
+      })
+      .addCase(registerUser.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(registerUser.fulfilled, state => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(registerUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = (action.payload as string) || 'Registration failed';
       })
       .addCase('persist/REHYDRATE', (state, action: any) => {
         return {
