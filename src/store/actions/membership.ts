@@ -11,7 +11,7 @@ export const loginUser = createAsyncThunk<
   { state: RootState; rejectValue: string }
 >('membership/login', async (credentials, { rejectWithValue }) => {
   try {
-    const response = await apiClient.post(API_ENDPOINTS.auth.login, credentials);
+    const response = await apiClient.post(API_ENDPOINTS.membership.login, credentials);
     const validated = MembershipSchemas.login.response.parse(response.data);
 
     if (validated.status !== 0) {
@@ -45,7 +45,7 @@ export const registerUser = createAsyncThunk<
   { state: RootState; rejectValue: string }
 >('membership/register', async (registrationData, { rejectWithValue }) => {
   try {
-    const response = await apiClient.post(API_ENDPOINTS.auth.register, registrationData);
+    const response = await apiClient.post(API_ENDPOINTS.membership.register, registrationData);
     const validated = MembershipSchemas.registration.response.parse(response.data);
 
     if (validated.status !== 0) {
@@ -81,7 +81,7 @@ export const getProfile = createAsyncThunk<
       return rejectWithValue('Authentication required');
     }
 
-    const response = await apiClient.get(API_ENDPOINTS.auth.profile, {
+    const response = await apiClient.get(API_ENDPOINTS.membership.profile, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -114,7 +114,7 @@ export const updateProfile = createAsyncThunk<
       return rejectWithValue('Authentication required');
     }
 
-    const response = await apiClient.put(API_ENDPOINTS.auth.profile, profileData, {
+    const response = await apiClient.put(API_ENDPOINTS.membership.profile, profileData, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -150,7 +150,7 @@ export const updateProfileImage = createAsyncThunk<
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await apiClient.put(API_ENDPOINTS.auth.profileImage, formData, {
+    const response = await apiClient.put(API_ENDPOINTS.membership.profileImage, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'multipart/form-data',
