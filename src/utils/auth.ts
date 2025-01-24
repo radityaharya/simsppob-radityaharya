@@ -3,7 +3,7 @@ import { store } from '../store/reducers/store';
 
 export async function requireAuth() {
   const state = store.getState();
-  const token = state.auth.token;
+  const token = state.membership.token;
 
   if (!token) {
     throw redirect('/auth/login');
@@ -15,11 +15,11 @@ export async function requireAuth() {
 export async function requireGuest() {
   const state = store.getState();
 
-  if (state.auth.loading) {
+  if (state.membership.loading) {
     return null;
   }
 
-  if (state.auth.isAuthenticated) {
+  if (state.membership.isAuthenticated) {
     throw redirect('/');
   }
 

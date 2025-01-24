@@ -3,23 +3,23 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Link, useNavigate } from 'react-router-dom';
 import { AtSign, User, Lock, AlertCircle, X } from 'lucide-react';
-import { AuthSchemas } from '~/types/schemas/membership';
+import { MembershipSchemas } from '~/types/schemas/membership';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { SecretInput } from '@/components/ui/secret-input';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { AuthLayout } from './components/AuthLayout';
 import { useAppDispatch, useAppSelector } from '@/store/reducers/store';
-import { registerUser } from '@/store/actions/thunkActions';
+import { registerUser } from '@/store/actions/membership';
 import { Card, CardContent } from '@/components/ui/card';
-import { clearError } from '@/store/reducers/auth';
+import { clearError } from '@/store/reducers/membership';
 import React from 'react';
 
-type RegisterFormData = z.infer<typeof AuthSchemas.registration.body> & {
+type RegisterFormData = z.infer<typeof MembershipSchemas.registration.body> & {
   confirm_password: string;
 };
 
-const registerSchema = AuthSchemas.registration.body
+const registerSchema = MembershipSchemas.registration.body
   .extend({
     confirm_password: z.string().min(8),
   })
@@ -31,7 +31,7 @@ const registerSchema = AuthSchemas.registration.body
 export default function RegisterPage() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { loading, error } = useAppSelector(state => state.auth);
+  const { loading, error } = useAppSelector(state => state.membership);
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
     defaultValues: {

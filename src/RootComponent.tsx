@@ -3,7 +3,7 @@ import { RouterProvider } from 'react-router-dom';
 import { router } from './routes';
 import './styles/main.css';
 import { useAppDispatch } from './store/reducers/store';
-import { setLoading } from './store/reducers/auth';
+import { setLoading } from './store/reducers/membership';
 
 const RootComponent: React.FC = () => {
   const dispatch = useAppDispatch();

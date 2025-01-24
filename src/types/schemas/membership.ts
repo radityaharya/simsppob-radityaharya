@@ -1,7 +1,14 @@
 import { z } from 'zod';
 import { BaseResponseSchema } from './base';
 
-export const AuthSchemas = {
+const ProfileDataSchema = z.object({
+  email: z.string(),
+  first_name: z.string(),
+  last_name: z.string(),
+  profile_image: z.string().url(),
+});
+
+export const MembershipSchemas = {
   registration: {
     body: z.object({
       email: z.string().email(),
@@ -28,14 +35,7 @@ export const AuthSchemas = {
 
   profile: {
     response: BaseResponseSchema.extend({
-      data: z
-        .object({
-          email: z.string(),
-          first_name: z.string(),
-          last_name: z.string(),
-          profile_image: z.string().url(),
-        })
-        .nullable(),
+      data: ProfileDataSchema.nullable(),
     }),
   },
 
@@ -44,7 +44,9 @@ export const AuthSchemas = {
       first_name: z.string().min(1),
       last_name: z.string().min(1),
     }),
-    response: BaseResponseSchema,
+    response: BaseResponseSchema.extend({
+      data: ProfileDataSchema.nullable(),
+    }),
   },
 
   updateProfileImage: {
@@ -53,6 +55,8 @@ export const AuthSchemas = {
         .instanceof(File)
         .refine(file => file.size <= 100000, 'File size must be less than 100KB'),
     }),
-    response: BaseResponseSchema,
+    response: BaseResponseSchema.extend({
+      data: ProfileDataSchema.nullable(),
+    }),
   },
 };

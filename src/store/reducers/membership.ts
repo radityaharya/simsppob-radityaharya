@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AuthState } from '../../types/auth';
-import { loginUser, registerUser } from '../actions/thunkActions';
+import { loginUser, registerUser } from '../actions/membership';
 
 const initialState: AuthState = {
   isAuthenticated: false,
@@ -9,8 +9,8 @@ const initialState: AuthState = {
   error: null,
 };
 
-const authSlice = createSlice({
-  name: 'auth',
+const membershipSlice = createSlice({
+  name: 'membership',
   initialState,
   reducers: {
     setAuth: (state, action: PayloadAction<{ token: string }>) => {
@@ -63,7 +63,7 @@ const authSlice = createSlice({
       .addCase('persist/REHYDRATE', (state, action: any) => {
         return {
           ...state,
-          ...action.payload?.auth,
+          ...action.payload?.membership,
           loading: false,
           error: null,
         };
@@ -71,5 +71,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { setAuth, clearAuth, setLoading, clearError } = authSlice.actions;
-export default authSlice.reducer;
+export const { setAuth, clearAuth, setLoading, clearError } = membershipSlice.actions;
+export default membershipSlice.reducer;

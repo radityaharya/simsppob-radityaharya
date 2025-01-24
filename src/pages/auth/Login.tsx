@@ -3,9 +3,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Link, useNavigate } from 'react-router-dom';
 import { AtSign, Lock, AlertCircle, X } from 'lucide-react';
-import { AuthSchemas } from '~/types/schemas/membership';
+import { MembershipSchemas } from '~/types/schemas/membership';
 import { useAppDispatch, useAppSelector } from '@/store/reducers/store';
-import { loginUser } from '@/store/actions/thunkActions';
+import { loginUser } from '@/store/actions/membership';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -18,19 +18,19 @@ import {
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { SecretInput } from '@/components/ui/secret-input';
-import { clearError } from '@/store/reducers/auth';
+import { clearError } from '@/store/reducers/membership';
 import React from 'react';
 import { AuthLayout } from './components/AuthLayout';
 
-type LoginFormData = z.infer<typeof AuthSchemas.login.body>;
+type LoginFormData = z.infer<typeof MembershipSchemas.login.body>;
 
 export default function LoginPage() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { loading, error } = useAppSelector(state => state.auth);
+  const { loading, error } = useAppSelector(state => state.membership);
 
   const form = useForm<LoginFormData>({
-    resolver: zodResolver(AuthSchemas.login.body),
+    resolver: zodResolver(MembershipSchemas.login.body),
     defaultValues: {
       email: '',
       password: '',
@@ -57,7 +57,7 @@ export default function LoginPage() {
       await dispatch(loginUser(data)).unwrap();
       navigate('/');
     } catch {
-      // Do nothing, error is handled by redux
+      console.error('Login failed');
     }
   }
 

@@ -7,6 +7,12 @@ export const API_ENDPOINTS = {
   auth: {
     login: '/login',
     register: '/registration',
+    profile: '/profile',
+    profileImage: '/profile/image',
+  },
+  information: {
+    banner: '/banner',
+    services: '/services',
   },
 };
 
@@ -19,7 +25,7 @@ export const apiClient = axios.create({
 
 apiClient.interceptors.request.use(config => {
   const state = store.getState();
-  const token = state.auth.token;
+  const token = state.membership.token;
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }

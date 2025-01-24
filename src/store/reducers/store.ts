@@ -10,18 +10,18 @@ import {
   REGISTER,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import auth from './auth';
+import membership from './membership';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 const rootReducer = combineReducers({
-  auth,
+  membership,
 });
 
 const persistedReducer = persistReducer(
   {
     key: 'root',
     storage,
-    whitelist: ['auth'],
+    whitelist: ['membership'],
   },
   rootReducer
 );
