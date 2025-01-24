@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { SecretInput } from '@/components/ui/secret-input';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { AuthLayout } from './components/AuthLayout';
 
 type RegisterFormData = z.infer<typeof AuthSchemas.registration.body> & {
   confirm_password: string;
@@ -40,186 +41,161 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="flex h-full min-h-screen">
-      <div className="w-full sm:w-1/2 bg-white flex flex-col items-center justify-center p-8 gap-2">
-        <div className="flex items-center mb-8 gap-2" role="banner">
-          <img src="/assets/logo.png" alt="SIMS PPOB Logo" className="w-6 h-6" />
-          <div className="text-foreground font-bold text-xl">SIMS PPOB</div>
-        </div>
-        <div
-          className="text-foreground mb-6 text-center text-2xl font-bold"
-          role="heading"
-          aria-level={1}
+    <AuthLayout title="Lengkapi data untuk\nmembuat akun">
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="w-full max-w-sm space-y-2"
+          aria-label="Form pendaftaran"
         >
-          Lengkapi data untuk
-          <br />
-          membuat akun
-        </div>
+          <div className="space-y-2 pb-8" role="group" aria-label="Form fields">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field, fieldState }) => (
+                <FormItem className="h-[60px]">
+                  <FormControl>
+                    <Input
+                      aria-label="Email address"
+                      aria-invalid={!!fieldState.error}
+                      aria-describedby={fieldState.error ? `email-error` : undefined}
+                      placeholder="masukan email anda"
+                      leftAddons={
+                        <AtSign
+                          className={`h-4 w-4 ${
+                            fieldState.error ? 'text-red-500' : 'text-gray-500'
+                          }`}
+                        />
+                      }
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-right" id="email-error" role="alert" />
+                </FormItem>
+              )}
+            />
 
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="w-full max-w-sm space-y-2"
-            aria-label="Form pendaftaran"
+            <FormField
+              control={form.control}
+              name="first_name"
+              render={({ field, fieldState }) => (
+                <FormItem className="h-[60px]">
+                  <FormControl>
+                    <Input
+                      aria-label="Nama depan"
+                      aria-invalid={!!fieldState.error}
+                      aria-describedby={fieldState.error ? `first-name-error` : undefined}
+                      placeholder="nama depan"
+                      leftAddons={
+                        <User
+                          className={`h-4 w-4 ${
+                            fieldState.error ? 'text-red-500' : 'text-gray-500'
+                          }`}
+                        />
+                      }
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-right" id="first-name-error" role="alert" />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="last_name"
+              render={({ field, fieldState }) => (
+                <FormItem className="h-[60px]">
+                  <FormControl>
+                    <Input
+                      aria-label="Nama belakang"
+                      aria-invalid={!!fieldState.error}
+                      aria-describedby={fieldState.error ? `last-name-error` : undefined}
+                      placeholder="nama belakang"
+                      leftAddons={
+                        <User
+                          className={`h-4 w-4 ${
+                            fieldState.error ? 'text-red-500' : 'text-gray-500'
+                          }`}
+                        />
+                      }
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-right" id="last-name-error" role="alert" />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field, fieldState }) => (
+                <FormItem className="h-[60px]">
+                  <FormControl>
+                    <SecretInput
+                      aria-label="Password"
+                      aria-invalid={!!fieldState.error}
+                      aria-describedby={fieldState.error ? `password-error` : undefined}
+                      placeholder="buat password"
+                      leftAddons={
+                        <Lock
+                          className={`h-4 w-4 ${
+                            fieldState.error ? 'text-red-500' : 'text-gray-500'
+                          }`}
+                        />
+                      }
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-right" id="password-error" role="alert" />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="confirm_password"
+              render={({ field, fieldState }) => (
+                <FormItem className="h-[60px]">
+                  <FormControl>
+                    <SecretInput
+                      aria-label="Konfirmasi password"
+                      aria-invalid={!!fieldState.error}
+                      aria-describedby={fieldState.error ? `confirm-password-error` : undefined}
+                      placeholder="konfirmasi password"
+                      leftAddons={
+                        <Lock
+                          className={`h-4 w-4 ${
+                            fieldState.error ? 'text-red-500' : 'text-gray-500'
+                          }`}
+                        />
+                      }
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-right" id="confirm-password-error" role="alert" />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <Button
+            type="submit"
+            className="w-full bg-red-500 hover:bg-red-600"
+            aria-label="Submit registration form"
           >
-            <div className="space-y-2 pb-8" role="group" aria-label="Form fields">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field, fieldState }) => (
-                  <FormItem className="h-[60px]">
-                    <FormControl>
-                      <Input
-                        aria-label="Email address"
-                        aria-invalid={!!fieldState.error}
-                        aria-describedby={fieldState.error ? `email-error` : undefined}
-                        placeholder="masukan email anda"
-                        leftAddons={
-                          <AtSign
-                            className={`h-4 w-4 ${
-                              fieldState.error ? 'text-red-500' : 'text-gray-500'
-                            }`}
-                          />
-                        }
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-right" id="email-error" role="alert" />
-                  </FormItem>
-                )}
-              />
+            Registrasi
+          </Button>
 
-              <FormField
-                control={form.control}
-                name="first_name"
-                render={({ field, fieldState }) => (
-                  <FormItem className="h-[60px]">
-                    <FormControl>
-                      <Input
-                        aria-label="Nama depan"
-                        aria-invalid={!!fieldState.error}
-                        aria-describedby={fieldState.error ? `first-name-error` : undefined}
-                        placeholder="nama depan"
-                        leftAddons={
-                          <User
-                            className={`h-4 w-4 ${
-                              fieldState.error ? 'text-red-500' : 'text-gray-500'
-                            }`}
-                          />
-                        }
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-right" id="first-name-error" role="alert" />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="last_name"
-                render={({ field, fieldState }) => (
-                  <FormItem className="h-[60px]">
-                    <FormControl>
-                      <Input
-                        aria-label="Nama belakang"
-                        aria-invalid={!!fieldState.error}
-                        aria-describedby={fieldState.error ? `last-name-error` : undefined}
-                        placeholder="nama belakang"
-                        leftAddons={
-                          <User
-                            className={`h-4 w-4 ${
-                              fieldState.error ? 'text-red-500' : 'text-gray-500'
-                            }`}
-                          />
-                        }
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-right" id="last-name-error" role="alert" />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field, fieldState }) => (
-                  <FormItem className="h-[60px]">
-                    <FormControl>
-                      <SecretInput
-                        aria-label="Password"
-                        aria-invalid={!!fieldState.error}
-                        aria-describedby={fieldState.error ? `password-error` : undefined}
-                        placeholder="buat password"
-                        leftAddons={
-                          <Lock
-                            className={`h-4 w-4 ${
-                              fieldState.error ? 'text-red-500' : 'text-gray-500'
-                            }`}
-                          />
-                        }
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-right" id="password-error" role="alert" />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="confirm_password"
-                render={({ field, fieldState }) => (
-                  <FormItem className="h-[60px]">
-                    <FormControl>
-                      <SecretInput
-                        aria-label="Konfirmasi password"
-                        aria-invalid={!!fieldState.error}
-                        aria-describedby={fieldState.error ? `confirm-password-error` : undefined}
-                        placeholder="konfirmasi password"
-                        leftAddons={
-                          <Lock
-                            className={`h-4 w-4 ${
-                              fieldState.error ? 'text-red-500' : 'text-gray-500'
-                            }`}
-                          />
-                        }
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-right" id="confirm-password-error" role="alert" />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <Button
-              type="submit"
-              className="w-full bg-red-500 hover:bg-red-600"
-              aria-label="Submit registration form"
-            >
-              Registrasi
-            </Button>
-
-            <div className="text-center text-xs font-medium mt-4" role="contentinfo">
-              <span className="text-muted-foreground">sudah punya akun? login </span>
-              <Link to="/auth/login" className="text-red-500 font-medium" aria-label="Login page">
-                di sini
-              </Link>
-            </div>
-          </form>
-        </Form>
-      </div>
-
-      <div className="w-1/2 bg-pink-100 items-center justify-center hidden sm:flex h-screen">
-        <img
-          src="/assets/illustrasi_login.png"
-          alt="illustrasi login"
-          className="h-full w-full object-cover object-center"
-          style={{ minHeight: '100%' }}
-        />
-      </div>
-    </div>
+          <div className="text-center text-xs font-medium mt-4" role="contentinfo">
+            <span className="text-muted-foreground">sudah punya akun? login </span>
+            <Link to="/auth/login" className="text-red-500 font-medium" aria-label="Login page">
+              di sini
+            </Link>
+          </div>
+        </form>
+      </Form>
+    </AuthLayout>
   );
 }
