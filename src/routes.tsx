@@ -1,21 +1,15 @@
 import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 import NotFoundPage from './pages/NotFoundPage';
-import LoginPage from './pages/auth/Login';
-import RegisterPage from './pages/auth/Register';
+import { LoginPage, RegisterPage } from './pages/auth';
 import { requireGuest } from './utils/auth';
 import Layout from './Layouts/Layout';
 import AuthLayout from './Layouts/AuthLayout';
 import ErrorPage from './pages/ErrorPage';
-import HomePage from './pages/home/HomePage';
-import { homeLoader } from './pages/home/loader';
-import AccountPage from './pages/account/AccountPage';
-import { accountLoader } from './pages/account/loader';
-import TopUpPage from './pages/topup/TopUp';
-import { topupLoader } from './pages/topup/loader';
-import TransactionsPage from './pages/transactions/TransactionsPage';
-import { transactionsLoader } from './pages/transactions/loader';
-import ServicesPage from './pages/services/ServicesPage';
-import { servicesLoader } from './pages/services/loader';
+import { HomePage, homeLoader } from './pages/home';
+import { AccountPage, accountLoader } from './pages/account';
+import { TopUpPage, topupLoader } from './pages/topup';
+import { TransactionsPage, transactionsLoader } from './pages/transactions';
+import { ServicesPage, servicesLoader } from './pages/services';
 
 export const routes = createRoutesFromElements(
   <Route>
