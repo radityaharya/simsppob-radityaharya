@@ -50,10 +50,10 @@ export function BalanceCard() {
           variant="link"
           className="text-white px-0 text-xs sm:text-base"
           onClick={toggleBalance}
-          aria-label={`${showBalance ? 'Sembunyikan' : 'Tampilkan'} saldo`}
+          aria-label={`${showBalance ? 'Tutup' : 'Lihat'} saldo`}
         >
-          <p className="text-xs sm:text-sm">lihat Saldo</p>
-          {showBalance ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}
+          <p className="text-xs sm:text-sm">{showBalance ? 'Tutup' : 'Lihat'} saldo</p>
+          {showBalance ? <Eye aria-hidden="true" /> : <EyeOff aria-hidden="true" />}
         </Button>
       </div>
     </div>
