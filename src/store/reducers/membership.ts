@@ -76,7 +76,7 @@ const membershipSlice = createSlice({
       .addCase('persist/REHYDRATE', (state, action: any) => {
         return {
           ...state,
-          ...action.payload?.membership,
+          ...(action.payload?.membership || {}),
           loading: false,
           error: null,
         };

@@ -7,14 +7,17 @@ import {
 } from '../actions/transaction';
 import { z } from 'zod';
 import { TransactionDataSchema } from '~/types/schemas/transaction';
+import { REHYDRATE } from 'redux-persist';
 
 type TransactionRecord = z.infer<typeof TransactionDataSchema>;
 
-interface TransactionState {
+export interface TransactionState {
   balance: number | null;
   loading: boolean;
+  isValidating: boolean;
   error: string | null;
   history: TransactionRecord[] | null;
+  lastUpdated?: number;
   pagination: {
     offset: number;
     limit: number;
@@ -25,8 +28,10 @@ interface TransactionState {
 const initialState: TransactionState = {
   balance: null,
   loading: false,
+  isValidating: false,
   error: null,
   history: null,
+  lastUpdated: undefined,
   pagination: {
     offset: 0,
     limit: 10,
@@ -42,16 +47,28 @@ const transactionSlice = createSlice({
   },
   extraReducers: builder => {
     builder
+      .addCase(REHYDRATE, (state, action: any) => {
+        return {
+          ...state,
+          ...(action.payload?.transaction || {}),
+          loading: false,
+          isValidating: false,
+        };
+      })
       .addCase(getBalance.pending, state => {
-        state.loading = true;
+        state.loading = state.balance === null;
+        state.isValidating = true;
         state.error = null;
       })
       .addCase(getBalance.fulfilled, (state, action) => {
         state.loading = false;
+        state.isValidating = false;
         state.balance = action.payload?.balance ?? null;
+        state.lastUpdated = Date.now();
       })
       .addCase(getBalance.rejected, (state, action) => {
         state.loading = false;
+        state.isValidating = false;
         state.error = action.payload as string;
       })
       .addCase(postTopup.fulfilled, (state, action) => {

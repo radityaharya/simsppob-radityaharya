@@ -1,8 +1,9 @@
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Eye, EyeOff } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/reducers/store';
+import { useAppDispatch } from '@/store/reducers/store';
+import { toggleBalanceVisibility } from '@/store/reducers/ui';
 
 function BalanceCardSkeleton() {
   return (
@@ -17,13 +18,12 @@ function BalanceCardSkeleton() {
 }
 
 export function BalanceCard() {
-  const [showBalance, setShowBalance] = useState(false);
-  const { balance: rawBalance, loading: transactionLoading } = useSelector(
-    (state: RootState) => state.transaction
-  );
+  const dispatch = useAppDispatch();
+  const showBalance = useSelector((state: RootState) => state.ui.showBalance);
+  const { balance: rawBalance, loading } = useSelector((state: RootState) => state.transaction);
 
   const toggleBalance = () => {
-    setShowBalance(!showBalance);
+    dispatch(toggleBalanceVisibility());
   };
 
   const balance = new Intl.NumberFormat('id-ID', {
@@ -31,7 +31,7 @@ export function BalanceCard() {
     currency: 'IDR',
   }).format(rawBalance ?? 0);
 
-  if (transactionLoading) {
+  if (rawBalance === null && loading) {
     return <BalanceCardSkeleton />;
   }
 

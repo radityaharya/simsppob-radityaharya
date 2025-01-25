@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Link, useNavigate } from 'react-router-dom';
 import { AtSign, User, Lock, AlertCircle, X } from 'lucide-react';
-import { MembershipSchemas } from '~/types/schemas/membership';
+import { MembershipSchemas } from '@/types/schemas/membership';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { SecretInput } from '@/components/ui/secret-input';
@@ -14,6 +14,7 @@ import { registerUser } from '@/store/actions/membership';
 import { Card, CardContent } from '@/components/ui/card';
 import { clearError } from '@/store/reducers/membership';
 import React from 'react';
+import { toast } from '@/hooks/use-toast';
 
 type RegisterFormData = z.infer<typeof MembershipSchemas.registration.body> & {
   confirm_password: string;
@@ -60,11 +61,15 @@ export default function RegisterPage() {
 
   async function onSubmit(data: RegisterFormData) {
     try {
-      const { confirm_password, ...registrationData } = data;
-      const result = await dispatch(registerUser(registrationData)).unwrap();
+      const { confirm_password: _, ...registrationData } = data;
+      await dispatch(registerUser(registrationData)).unwrap();
       navigate('/auth/login');
     } catch (err) {
-      // Error is handled by redux
+      toast({
+        title: 'Error',
+        description: err as string,
+        variant: 'destructive',
+      });
     }
   }
 

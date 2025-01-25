@@ -5,8 +5,8 @@ import { RootState } from '../reducers/store';
 import { handleApiRequest } from './helper';
 import { z } from 'zod';
 
-type Banner = z.infer<typeof InformationSchemas.banners.response>['data'][number];
-type Service = z.infer<typeof InformationSchemas.services.response>['data'][number];
+type Banner = z.infer<typeof InformationSchemas.banners.response>['data'][0];
+type Service = z.infer<typeof InformationSchemas.services.response>['data'][0];
 
 export const getBanners = createAsyncThunk<
   Banner[],
