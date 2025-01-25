@@ -6,7 +6,6 @@ import { UserWelcome } from '~/components/UserWelcome';
 import { Input } from '~/components/ui/input';
 import { Button } from '~/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
-import { useToast } from '~/hooks/use-toast';
 import { Banknote, Check, X, Wallet } from 'lucide-react';
 import { useAppDispatch } from '~/store/reducers/store';
 import { postTopup } from '~/store/actions/transaction';
@@ -19,6 +18,7 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const formSchema = z.object({
   amount: z
@@ -37,6 +37,7 @@ type FormValues = z.infer<typeof formSchema>;
 const presetAmounts = [10000, 20000, 50000, 100000, 250000, 500000];
 
 export default function TopUpPage() {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isResultDialogOpen, setIsResultDialogOpen] = useState(false);
@@ -218,9 +219,12 @@ export default function TopUpPage() {
                           type="button"
                           variant="link"
                           className="text-lg font-medium"
-                          onClick={() => setIsResultDialogOpen(false)}
+                          onClick={() => {
+                            setIsResultDialogOpen(false);
+                            navigate('/');
+                          }}
                         >
-                          Tutup
+                          Kembali ke Beranda
                         </Button>
                       </DialogFooter>
                     </DialogContent>

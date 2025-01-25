@@ -1,22 +1,31 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '~/Layouts/Layout';
+import { Button } from '~/components/ui/button';
+
+export const NotFound: React.FC = () => {
+  return (
+    <div className="flex-1 flex items-center justify-center py-16">
+      <div className="text-center space-y-6">
+        <h1 className="text-7xl font-bold text-primary">404</h1>
+        <div className="space-y-2">
+          <p className="text-2xl font-semibold text-foreground">Page not found</p>
+          <p className="text-muted-foreground">The page you're looking for doesn't exist.</p>
+        </div>
+        <Link to="/">
+          <Button variant="default" size="lg" className="font-semibold">
+            Back to Home
+          </Button>
+        </Link>
+      </div>
+    </div>
+  );
+};
 
 const NotFoundPage: React.FC = () => {
   return (
     <Layout>
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-6xl font-bold text-gray-900 mb-4">404</h1>
-          <p className="text-xl text-gray-600 mb-8">Page not found</p>
-          <Link
-            to="/"
-            className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          >
-            Go back home
-          </Link>
-        </div>
-      </div>
+      <NotFound />
     </Layout>
   );
 };

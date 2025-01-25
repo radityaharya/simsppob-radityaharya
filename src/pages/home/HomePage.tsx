@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/store/reducers/store';
 import { BalanceCard } from '@/components/BalanceCard';
 import { UserWelcome } from '@/components/UserWelcome';
+import { Link } from 'react-router-dom';
 
 function ServicesGridSkeleton() {
   return (
@@ -42,10 +43,6 @@ export default function HomePage() {
     loading: informationLoading,
   } = useSelector((state: RootState) => state.information);
 
-  if (informationLoading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div className="max-w-screen overflow-x-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -66,9 +63,10 @@ export default function HomePage() {
           ) : (
             <div className="flex flex-wrap justify-between gap-4 sm:gap-2">
               {services.map(service => (
-                <div
+                <Link
                   key={service.service_code}
-                  className="flex flex-col items-center sm:basis-[calc(8.33%-8px)]"
+                  to={`/services/${service.service_code.toLowerCase()}`}
+                  className="flex flex-col items-center sm:basis-[calc(8.33%-8px)] hover:opacity-80 transition-opacity"
                   role="listitem"
                 >
                   <div className="size-16">
@@ -81,7 +79,7 @@ export default function HomePage() {
                   <span className="mt-2 text-[0.6rem] sm:text-xs font-medium text-center w-16 sm:w-20 break-words">
                     {service.service_name}
                   </span>
-                </div>
+                </Link>
               ))}
             </div>
           )}

@@ -28,7 +28,7 @@ export default function AccountPage() {
   const navigate = useNavigate();
   const [isEdit, setIsEdit] = useState(false);
   const dispatch = useAppDispatch();
-  const { profile, loading, error } = useAppSelector(state => state.membership);
+  const { profile, loading } = useAppSelector(state => state.membership);
   const { toast } = useToast();
 
   const form = useForm<ProfileFormData>({
@@ -100,7 +100,7 @@ export default function AccountPage() {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return null;
   }
 
   return (
