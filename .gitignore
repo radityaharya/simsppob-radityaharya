@@ -16,3 +16,5 @@
 
 # cloudflare pages
 .wrangler/*
+
+.env
