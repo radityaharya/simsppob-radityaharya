@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { User, AlertCircle, X, Camera, AtSign } from 'lucide-react';
+import { User, Pencil, AtSign } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import {
   Form,
@@ -16,7 +15,6 @@ import {
 } from '@/components/ui/form';
 import { useAppDispatch, useAppSelector } from '@/store/reducers/store';
 import { updateProfile, updateProfileImage } from '@/store/actions/membership';
-import { clearError } from '@/store/reducers/membership';
 import { MembershipSchemas } from '~/types/schemas/membership';
 import { z } from 'zod';
 import { cn } from '~/lib/utils';
@@ -117,10 +115,10 @@ export default function AccountPage() {
               </Avatar>
               <label
                 htmlFor="profile-image"
-                className="absolute bottom-0 right-0 p-2 bg-red-500 rounded-full cursor-pointer"
+                className="absolute bottom-0 right-0 p-2 bg-gray-200 border border-gray-300 rounded-full cursor-pointer"
                 aria-label="Update profile picture"
               >
-                <Camera className="size-4 text-white" />
+                <Pencil className="size-4 text-black" />
                 <input
                   type="file"
                   id="profile-image"
