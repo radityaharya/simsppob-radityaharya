@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AuthState, Profile } from '../../types/auth';
+import { AuthState, Profile, PersistedUserData } from '../../types/auth';
 import {
   getProfile,
   loginUser,
@@ -14,6 +14,9 @@ const initialState: AuthState = {
   loading: true,
   error: null,
   profile: null,
+  persistedData: undefined,
+  lastUpdated: undefined,
+  isValidating: false,
 };
 
 const membershipSlice = createSlice({
@@ -26,6 +29,15 @@ const membershipSlice = createSlice({
       state.loading = false;
     },
     clearAuth: state => {
+      if (state.profile) {
+        state.persistedData = {
+          firstName: state.profile.first_name,
+          lastName: state.profile.last_name,
+          profileImage: state.profile.profile_image,
+          lastUpdated: Date.now(),
+          isValidating: false,
+        };
+      }
       state.isAuthenticated = false;
       state.token = null;
       state.profile = null;
@@ -43,6 +55,9 @@ const membershipSlice = createSlice({
     },
     clearProfile: state => {
       state.profile = null;
+    },
+    clearPersistedData: state => {
+      state.persistedData = undefined;
     },
   },
   extraReducers: builder => {
@@ -84,14 +99,24 @@ const membershipSlice = createSlice({
         };
       })
       .addCase(getProfile.pending, state => {
-        state.loading = true;
+        state.loading = state.profile === null;
+        state.isValidating = true;
         state.error = null;
       })
       .addCase(getProfile.fulfilled, (state, action) => {
         state.loading = false;
+        state.isValidating = false;
         state.error = null;
         if (action.payload) {
           state.profile = action.payload;
+          state.persistedData = {
+            firstName: action.payload.first_name,
+            lastName: action.payload.last_name,
+            profileImage: action.payload.profile_image,
+            lastUpdated: Date.now(),
+            isValidating: false,
+          };
+          state.lastUpdated = Date.now();
         }
       })
       .addCase(getProfile.rejected, (state, action) => {
@@ -115,6 +140,13 @@ const membershipSlice = createSlice({
   },
 });
 
-export const { setAuth, clearAuth, setLoading, clearError, setProfile, clearProfile } =
-  membershipSlice.actions;
+export const {
+  setAuth,
+  clearAuth,
+  setLoading,
+  clearError,
+  setProfile,
+  clearProfile,
+  clearPersistedData,
+} = membershipSlice.actions;
 export default membershipSlice.reducer;

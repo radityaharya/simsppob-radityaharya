@@ -15,15 +15,18 @@ function UserWelcomeSkeleton() {
 }
 
 export function UserWelcome() {
-  const { profile, loading } = useSelector((state: RootState) => state.membership);
+  const { profile, persistedData, loading, isValidating } = useSelector(
+    (state: RootState) => state.membership
+  );
 
-  if (loading) {
+  if (loading && !persistedData) {
     return <UserWelcomeSkeleton />;
   }
 
-  const name =
-    profile?.first_name && profile?.last_name
-      ? `${profile.first_name} ${profile.last_name}`
+  const name = profile
+    ? `${profile.first_name} ${profile.last_name}`
+    : persistedData
+      ? `${persistedData.firstName} ${persistedData.lastName}`
       : 'User';
 
   const nameFallback = name
@@ -33,13 +36,15 @@ export function UserWelcome() {
     .slice(0, 2)
     .toUpperCase();
 
+  const profileImage = profile?.profile_image || persistedData?.profileImage;
+
   return (
     <div className="h-full bg-background px-0 sm:px-6 py-4 rounded-2xl flex sm:flex-col sm:justify-end gap-4">
-      <Avatar className="size-12 sm:size-16">
-        <AvatarImage src={profile?.profile_image} alt={`Profile picture of ${name}`} />
+      <Avatar className={`size-12 sm:size-16 ${isValidating ? 'opacity-60' : ''}`}>
+        <AvatarImage src={profileImage} alt={`Profile picture of ${name}`} />
         <AvatarFallback>{nameFallback}</AvatarFallback>
       </Avatar>
-      <div>
+      <div className={isValidating ? 'opacity-60' : ''}>
         <p className="text-sm sm:text-lg font-medium text-muted-foreground">Selamat datang,</p>
         <h2 className="text-xl sm:text-3xl font-bold">{name}</h2>
       </div>
