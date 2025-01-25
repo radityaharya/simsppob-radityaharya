@@ -202,3 +202,40 @@
 html {
   scrollbar-gutter: stable;
 }
+
+@layer utilities {
+  .overflow-x-auto {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .overflow-x-auto::-webkit-scrollbar {
+    display: none;
+    height: 8px;
+  }
+
+  .overflow-x-auto:hover {
+    scrollbar-width: thin;
+    -ms-overflow-style: auto;
+  }
+
+  .overflow-x-auto:hover::-webkit-scrollbar {
+    display: block;
+  }
+
+  .overflow-x-auto::-webkit-scrollbar-thumb {
+    background-color: rgba(128, 128, 128, 0.4);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+    transition: background-color 0.2s ease;
+  }
+
+  .overflow-x-auto::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(128, 128, 128, 0.6);
+  }
+
+  .overflow-x-auto::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+}
