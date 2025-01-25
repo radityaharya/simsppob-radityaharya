@@ -89,8 +89,8 @@ export default function TopUpPage() {
           </section>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <section className="mb-8 sm:mb-16 px-4 sm:px-0" aria-label="Top Up Form" role="form">
+        <div className="max-w-7xl mx-auto sm:px-6">
+          <section className="mb-8 sm:mb-16 sm:px-0" aria-label="Top Up Form" role="form">
             <h2 className="text-2xl font-semibold mb-6 sm:mb-12" id="topup-heading">
               <span className="text-lg font-normal text-muted-foreground">Silahkan masukan</span>
               <br />

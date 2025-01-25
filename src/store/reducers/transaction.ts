@@ -15,6 +15,11 @@ interface TransactionState {
   loading: boolean;
   error: string | null;
   history: TransactionRecord[] | null;
+  pagination: {
+    offset: number;
+    limit: number;
+    hasMore: boolean;
+  };
 }
 
 const initialState: TransactionState = {
@@ -22,6 +27,11 @@ const initialState: TransactionState = {
   loading: false,
   error: null,
   history: null,
+  pagination: {
+    offset: 0,
+    limit: 10,
+    hasMore: true,
+  },
 };
 
 const transactionSlice = createSlice({
@@ -52,8 +62,29 @@ const transactionSlice = createSlice({
           state.balance = state.balance ? state.balance - action.payload.total_amount : null;
         }
       })
+      .addCase(getTransactionHistory.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(getTransactionHistory.fulfilled, (state, action) => {
-        state.history = action.payload?.records ?? null;
+        state.loading = false;
+        if (action.payload) {
+          state.history =
+            action.meta.arg.offset === 0
+              ? action.payload.records
+              : [...(state.history || []), ...action.payload.records];
+          state.pagination = {
+            offset: action.meta.arg.offset ?? 0,
+            limit: action.meta.arg.limit ?? initialState.pagination.limit,
+            hasMore:
+              action.payload.records.length ===
+              (action.meta.arg.limit ?? initialState.pagination.limit),
+          };
+        }
+      })
+      .addCase(getTransactionHistory.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
   },
 });

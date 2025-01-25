@@ -12,6 +12,8 @@ import AccountPage from './pages/account/AccountPage';
 import { accountLoader } from './pages/account/loader';
 import TopUpPage from './pages/topup/TopUp';
 import { topupLoader } from './pages/topup/loader';
+import TransactionsPage from './pages/transactions/TransactionsPage';
+import { transactionsLoader } from './pages/transactions/loader';
 
 export const routes = createRoutesFromElements(
   <Route>
@@ -30,6 +32,10 @@ export const routes = createRoutesFromElements(
 
     <Route path="topup" element={<Layout />} errorElement={<ErrorPage />}>
       <Route index element={<TopUpPage />} loader={topupLoader} />
+    </Route>
+
+    <Route path="transactions" element={<Layout />} errorElement={<ErrorPage />}>
+      <Route index element={<TransactionsPage />} loader={transactionsLoader} />
     </Route>
 
     <Route path="*" element={<NotFoundPage />} />

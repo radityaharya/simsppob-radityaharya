@@ -4,8 +4,16 @@ import { Eye, EyeOff } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/reducers/store';
 
-function BalanceAmountSkeleton() {
-  return <div className="h-8 sm:h-10 w-[300px] bg-white/20 rounded animate-pulse" />;
+function BalanceCardSkeleton() {
+  return (
+    <div className="h-full flex-col bg-red-500/90 text-white p-4 sm:p-6 rounded-2xl flex justify-between items-start gap-2 sm:gap-4">
+      <div className="flex flex-col items-start gap-1 sm:gap-3 w-full">
+        <div className="h-4 sm:h-5 w-20 sm:w-24 bg-white/20 rounded animate-pulse" />
+        <div className="h-8 sm:h-10 w-48 sm:w-64 bg-white/20 rounded animate-pulse" />
+      </div>
+      <div className="h-6 w-24 bg-white/20 rounded animate-pulse" />
+    </div>
+  );
 }
 
 export function BalanceCard() {
@@ -23,26 +31,25 @@ export function BalanceCard() {
     currency: 'IDR',
   }).format(rawBalance ?? 0);
 
+  if (transactionLoading) {
+    return <BalanceCardSkeleton />;
+  }
+
   return (
-    <div className="h-[160px] bg-red-500 text-white p-4 sm:p-6 rounded-2xl flex flex-col justify-between items-start">
+    <div className="h-full flex-col bg-red-500 text-white p-4 sm:p-6 rounded-2xl flex justify-between items-start gap-2 sm:gap-4">
       <div className="flex flex-col items-start gap-1 sm:gap-3">
         <p className="text-xs sm:text-lg text-white" id="balance-label">
           Saldo anda
         </p>
-        {transactionLoading ? (
-          <BalanceAmountSkeleton />
-        ) : (
-          <h3 className="text-2xl sm:text-4xl font-bold w-[300px]" aria-labelledby="balance-label">
-            {showBalance ? balance : 'Rp • • • • • • • •'}
-          </h3>
-        )}
+        <h3 className="text-2xl sm:text-4xl font-bold" aria-labelledby="balance-label">
+          {showBalance ? balance : 'Rp • • • • • • • •'}
+        </h3>
       </div>
       <div>
         <Button
           variant="link"
           className="text-white px-0 text-xs sm:text-base"
           onClick={toggleBalance}
-          disabled={transactionLoading}
           aria-label={`${showBalance ? 'Sembunyikan' : 'Tampilkan'} saldo`}
         >
           <p className="text-xs sm:text-sm">lihat Saldo</p>

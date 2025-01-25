@@ -7,12 +7,14 @@ const BalanceDataSchema = z.object({
 
 export const TransactionDataSchema = z.object({
   invoice_number: z.string(),
-  service_code: z.string(),
-  service_name: z.string(),
+  service_code: z.string().optional(),
+  service_name: z.string().optional(),
+  description: z.string().optional(),
   transaction_type: z.enum(['PAYMENT', 'TOPUP']),
   total_amount: z.number(),
   created_on: z.string().datetime(),
 });
+
 export const TransactionSchemas = {
   balance: {
     response: BaseResponseSchema.extend({
@@ -40,14 +42,27 @@ export const TransactionSchemas = {
 
   transactionHistory: {
     query: z.object({
-      offset: z.number().default(0),
-      limit: z.number().optional(),
+      offset: z
+        .string()
+        .or(z.number())
+        .transform(val => Number(val)),
+      limit: z
+        .string()
+        .or(z.number())
+        .optional()
+        .transform(val => (val ? Number(val) : undefined)),
     }),
     response: BaseResponseSchema.extend({
       data: z
         .object({
-          offset: z.number(),
-          limit: z.number(),
+          offset: z
+            .string()
+            .or(z.number())
+            .transform(val => Number(val)),
+          limit: z
+            .string()
+            .or(z.number())
+            .transform(val => Number(val)),
           records: z.array(TransactionDataSchema),
         })
         .nullable(),
