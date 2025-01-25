@@ -66,10 +66,10 @@ export default function HomePage() {
                 <Link
                   key={service.service_code}
                   to={`/services/${service.service_code.toLowerCase()}`}
-                  className="flex flex-col items-center sm:basis-[calc(8.33%-8px)] hover:opacity-80 transition-opacity"
+                  className="flex flex-col items-center sm:basis-[calc(8.33%-8px)] hover:opacity-80 transition-all duration-200 hover:scale-110"
                   role="listitem"
                 >
-                  <div className="size-16">
+                  <div className="size-16 transition-transform duration-200">
                     <img
                       src={service.service_icon}
                       alt={`Icon for ${service.service_name}`}

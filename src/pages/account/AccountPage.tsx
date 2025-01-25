@@ -80,6 +80,14 @@ export default function AccountPage() {
     const file = event.target.files?.[0];
     if (file) {
       try {
+        if (file.size > 100000) {
+          toast({
+            title: 'Error',
+            description: 'Profile picture size must be less than 100KB',
+            variant: 'destructive',
+          });
+          return;
+        }
         await dispatch(updateProfileImage(file)).unwrap();
         toast({
           title: 'Profile picture updated',
@@ -238,7 +246,12 @@ export default function AccountPage() {
           </form>
         </Form>
 
-        <Button type="button" variant="destructive" className="w-full mt-4" onClick={handleLogout}>
+        <Button
+          type="button"
+          variant="outline"
+          className="border-red-500 text-primary w-full mt-4 hover:bg-red-500 hover:text-white"
+          onClick={handleLogout}
+        >
           Logout
         </Button>
       </div>
