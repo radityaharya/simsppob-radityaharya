@@ -57,7 +57,7 @@ export default function TransactionsPage() {
             <div className="space-y-4" role="feed" aria-labelledby="transaction-list-title">
               {history?.length === 0 && !loading && (
                 <div className="text-center text-gray-500" role="status" aria-live="polite">
-                  No transactions found
+                  Maaf tidak ada histori transaksi saat ini
                 </div>
               )}
               {history?.map(transaction => (

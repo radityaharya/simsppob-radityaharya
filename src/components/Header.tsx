@@ -23,10 +23,10 @@ const Header: React.FC = () => {
           </div>
           <div className="flex items-center space-x-4 sm:space-x-8">
             <Link to="/topup" className={getLinkClass('/topup')}>
-              Topup
+              Top Up
             </Link>
             <Link to="/transactions" className={getLinkClass('/transactions')}>
-              Transaksi
+              Transactions
             </Link>
             <Link to="/account" className={getLinkClass('/account')}>
               Akun
