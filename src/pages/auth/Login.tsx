@@ -2,25 +2,19 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Link, useNavigate } from 'react-router-dom';
-import { AtSign, Lock, AlertCircle, X } from 'lucide-react';
+import { AtSign, Lock } from 'lucide-react';
 import { MembershipSchemas } from '~/types/schemas/membership';
 import { useAppDispatch, useAppSelector } from '@/store/reducers/store';
 import { loginUser } from '@/store/actions/membership';
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
 import { SecretInput } from '@/components/ui/secret-input';
 import { clearError } from '@/store/reducers/membership';
 import React from 'react';
-import { AuthLayout } from './components/AuthLayout';
+import { AuthLogo } from './components/AuthLogo';
+import { AuthIllustration } from './components/AuthIllustration';
+import { ErrorBanner } from './components/ErrorBanner';
 
 type LoginFormData = z.infer<typeof MembershipSchemas.login.body>;
 
@@ -57,123 +51,115 @@ export default function LoginPage() {
       await dispatch(loginUser(data)).unwrap();
       navigate('/');
     } catch {
-      console.error('Login failed');
+      form.setError('password', { message: 'Invalid email or password' });
+      form.setFocus('password');
     }
   }
 
   return (
-    <AuthLayout
-      title={
-        <>
+    <div className="flex h-full min-h-screen">
+      <div className="w-full sm:w-1/2 bg-background flex flex-col items-center justify-center p-8 gap-2 relative">
+        <AuthLogo />
+
+        <div className="text-foreground mb-6 text-center text-2xl font-bold">
           Masuk atau buat akun
           <br />
           untuk memulai
-        </>
-      }
-    >
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="w-full max-w-sm space-y-2"
-          aria-label="Form login"
-        >
-          <div className="space-y-2 pb-6" role="group" aria-label="Form fields">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field, fieldState }) => (
-                <FormItem className="h-[60px]">
-                  <FormControl>
-                    <Input
-                      aria-label="Email address"
-                      aria-invalid={!!fieldState.error}
-                      aria-describedby={fieldState.error ? `email-error` : undefined}
-                      placeholder="masukan email anda"
-                      disabled={loading}
-                      leftAddons={
-                        <AtSign
-                          className={`h-4 w-4 ${
-                            fieldState.error ? 'text-red-500' : 'text-gray-500'
-                          }`}
-                        />
-                      }
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-right" id="email-error" role="alert" />
-                </FormItem>
-              )}
-            />
+        </div>
 
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field, fieldState }) => (
-                <FormItem className="h-[60px]">
-                  <FormControl>
-                    <SecretInput
-                      aria-label="Password"
-                      aria-invalid={!!fieldState.error}
-                      aria-describedby={fieldState.error ? `password-error` : undefined}
-                      placeholder="masukan password anda"
-                      disabled={loading}
-                      leftAddons={
-                        <Lock
-                          className={`h-4 w-4 ${
-                            fieldState.error ? 'text-red-500' : 'text-gray-500'
-                          }`}
-                        />
-                      }
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-right" id="password-error" role="alert" />
-                </FormItem>
-              )}
-            />
-          </div>
-          <Button
-            type="submit"
-            className="w-full bg-red-500 hover:bg-red-600"
-            disabled={loading}
-            aria-label={loading ? 'Logging in...' : 'Login'}
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="w-full max-w-sm space-y-2"
+            aria-label="Form login"
           >
-            {loading ? 'Loading...' : 'Masuk'}
-          </Button>
+            <div className="space-y-2 pb-6" role="group" aria-label="Form fields">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field, fieldState }) => (
+                  <FormItem className="h-[60px]">
+                    <FormControl>
+                      <Input
+                        aria-label="Email address"
+                        aria-invalid={!!fieldState.error}
+                        aria-describedby={fieldState.error ? `email-error` : undefined}
+                        placeholder="masukan email anda"
+                        disabled={loading}
+                        leftAddons={
+                          <AtSign
+                            className={`h-4 w-4 ${
+                              fieldState.error ? 'text-red-500' : 'text-gray-500'
+                            }`}
+                          />
+                        }
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-right" id="email-error" role="alert" />
+                  </FormItem>
+                )}
+              />
 
-          <div className="text-center text-xs font-medium mt-4">
-            <span className="text-muted-foreground">belum punya akun? registrasi </span>
-            <Link
-              to="/auth/register"
-              className="text-red-500 font-medium"
-              aria-label="Register page"
-            >
-              di sini
-            </Link>
-          </div>
-        </form>
-      </Form>
-      {error && (
-        <Card
-          className="border-red-200 bg-red-50 w-[90%] absolute bottom-4 left-1/2 -translate-x-1/2"
-          role="alert"
-          aria-live="polite"
-        >
-          <CardContent className="p-4 flex items-center justify-between text-red-600">
-            <div className="flex items-center space-x-2">
-              <AlertCircle className="h-4 w-4" />
-              <p className="text-sm">{error}</p>
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field, fieldState }) => (
+                  <FormItem className="h-[60px]">
+                    <FormControl>
+                      <SecretInput
+                        aria-label="Password"
+                        aria-invalid={!!fieldState.error}
+                        aria-describedby={fieldState.error ? `password-error` : undefined}
+                        placeholder="masukan password anda"
+                        disabled={loading}
+                        leftAddons={
+                          <Lock
+                            className={`h-4 w-4 ${
+                              fieldState.error ? 'text-red-500' : 'text-gray-500'
+                            }`}
+                          />
+                        }
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-right" id="password-error" role="alert" />
+                  </FormItem>
+                )}
+              />
             </div>
-            <button
-              onClick={() => dispatch(clearError())}
-              className="text-red-600 hover:text-red-700"
-              aria-label="Close error message"
+            <Button
+              type="submit"
+              className="w-full bg-red-500 hover:bg-red-600"
+              disabled={loading}
+              aria-label={loading ? 'Logging in...' : 'Login'}
             >
-              <X className="h-4 w-4" />
-            </button>
-          </CardContent>
-        </Card>
-      )}
-    </AuthLayout>
+              {loading ? 'Loading...' : 'Masuk'}
+            </Button>
+
+            <div className="text-center text-xs font-medium mt-4">
+              <span className="text-muted-foreground">belum punya akun? registrasi </span>
+              <Link
+                to="/auth/register"
+                className="text-red-500 font-medium"
+                aria-label="Register page"
+              >
+                di sini
+              </Link>
+            </div>
+          </form>
+        </Form>
+
+        {error && (
+          <ErrorBanner
+            error={error}
+            onClose={() => dispatch(clearError())}
+            className="w-[90%] absolute bottom-4"
+          />
+        )}
+      </div>
+
+      <AuthIllustration />
+    </div>
   );
 }
