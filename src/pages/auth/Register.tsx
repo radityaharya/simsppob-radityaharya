@@ -64,6 +64,11 @@ export default function RegisterPage() {
     try {
       const { confirm_password: _, ...registrationData } = data;
       await dispatch(registerUser(registrationData)).unwrap();
+      toast({
+        title: 'Registrasi berhasil!',
+        description: 'Akun anda berhasil dibuat, silahkan login',
+        variant: 'success',
+      });
       navigate('/auth/login');
     } catch (err) {
       toast({
