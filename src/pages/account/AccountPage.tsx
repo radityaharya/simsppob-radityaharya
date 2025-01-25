@@ -243,24 +243,6 @@ export default function AccountPage() {
         <Button type="button" variant="destructive" className="w-full mt-4" onClick={handleLogout}>
           Logout
         </Button>
-
-        {error && (
-          <Card className="border-red-200 bg-red-50 mt-4" role="alert" aria-live="polite">
-            <CardContent className="p-4 flex items-center justify-between text-red-600">
-              <div className="flex items-center space-x-2">
-                <AlertCircle className="h-4 w-4" />
-                <p className="text-sm">{error}</p>
-              </div>
-              <button
-                onClick={() => dispatch(clearError())}
-                className="text-red-600 hover:text-red-700"
-                aria-label="Close error message"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </CardContent>
-          </Card>
-        )}
       </div>
     </div>
   );

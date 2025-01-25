@@ -4,6 +4,11 @@ import { clearAuth } from '~/store/reducers/membership';
 
 export async function requireAuth() {
   const state = store.getState();
+
+  if (state.membership.loading) {
+    return null;
+  }
+
   const token = state.membership.token;
 
   if (!token) {
