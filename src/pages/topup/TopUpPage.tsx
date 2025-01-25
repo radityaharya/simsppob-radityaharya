@@ -55,7 +55,7 @@ export default function TopUpPage() {
   const handleConfirmTopUp = async () => {
     try {
       const amount = form.getValues('amount');
-      const response = await dispatch(postTopup({ top_up_amount: parseInt(amount) })).unwrap();
+      await dispatch(postTopup({ top_up_amount: parseInt(amount) })).unwrap();
       setIsDialogOpen(false);
       setTopupResult({
         success: true,
@@ -63,7 +63,7 @@ export default function TopUpPage() {
       });
       setIsResultDialogOpen(true);
       form.reset();
-    } catch (error) {
+    } catch {
       setIsDialogOpen(false);
       setTopupResult({
         success: false,
@@ -73,7 +73,7 @@ export default function TopUpPage() {
     }
   };
 
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = () => {
     setIsDialogOpen(true);
   };
 

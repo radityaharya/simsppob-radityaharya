@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AuthState, Profile, PersistedUserData } from '../../types/auth';
+import { AuthState, Profile } from '../../types/auth';
 import {
   getProfile,
   loginUser,

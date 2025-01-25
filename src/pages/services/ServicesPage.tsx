@@ -44,7 +44,7 @@ export default function ServicesPage() {
         amount: service.service_tariff,
       });
       setIsResultDialogOpen(true);
-    } catch (error) {
+    } catch {
       setIsDialogOpen(false);
       setTransactionResult({
         success: false,
