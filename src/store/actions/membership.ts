@@ -74,7 +74,7 @@ export const updateProfile = createAsyncThunk<
   if (!token) {
     return rejectWithValue('Authentication required');
   }
-  const request = apiClient.put(API_ENDPOINTS.membership.profile, profileData, {
+  const request = apiClient.put(API_ENDPOINTS.membership.profileUpdate, profileData, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return await handleApiRequest(request, MembershipSchemas.profile.response, rejectWithValue);

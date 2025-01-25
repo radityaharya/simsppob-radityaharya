@@ -1,5 +1,6 @@
 import { redirect } from 'react-router-dom';
 import { store } from '../store/reducers/store';
+import { clearAuth } from '~/store/reducers/membership';
 
 export async function requireAuth() {
   const state = store.getState();
@@ -24,4 +25,9 @@ export async function requireGuest() {
   }
 
   return null;
+}
+
+export async function logout() {
+  store.dispatch(clearAuth());
+  return redirect('/auth/login');
 }

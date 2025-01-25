@@ -28,7 +28,7 @@ const Header: React.FC = () => {
             <Link to="/transaksi" className={getLinkClass('/transaksi')}>
               Transaksi
             </Link>
-            <Link to="/akun" className={getLinkClass('/akun')}>
+            <Link to="/account" className={getLinkClass('/account')}>
               Akun
             </Link>
           </div>

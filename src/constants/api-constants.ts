@@ -8,6 +8,7 @@ export const API_ENDPOINTS = {
     login: '/login',
     register: '/registration',
     profile: '/profile',
+    profileUpdate: '/profile/update',
     profileImage: '/profile/image',
   },
   information: {

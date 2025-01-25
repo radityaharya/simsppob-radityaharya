@@ -8,6 +8,8 @@ import AuthLayout from './Layouts/AuthLayout';
 import ErrorPage from './pages/ErrorPage';
 import HomePage from './pages/home/HomePage';
 import { homeLoader } from './pages/home/loader';
+import AccountPage from './pages/account/AccountPage';
+import { accountLoader } from './pages/account/loader';
 export const routes = createRoutesFromElements(
   <Route>
     <Route path="/" element={<Layout />} errorElement={<ErrorPage />}>
@@ -17,6 +19,10 @@ export const routes = createRoutesFromElements(
     <Route path="auth" element={<AuthLayout />} errorElement={<ErrorPage />}>
       <Route path="login" element={<LoginPage />} loader={requireGuest} />
       <Route path="register" element={<RegisterPage />} loader={requireGuest} />
+    </Route>
+
+    <Route path="account" element={<Layout />} errorElement={<ErrorPage />}>
+      <Route index element={<AccountPage />} loader={accountLoader} />
     </Route>
 
     <Route path="*" element={<NotFoundPage />} />
