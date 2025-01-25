@@ -1,7 +1,6 @@
 import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 import NotFoundPage from './pages/NotFoundPage';
-import { LoginPage, RegisterPage } from './pages/auth';
-import { requireGuest } from './utils/auth';
+import { LoginPage, RegisterPage, authLoader } from './pages/auth';
 import Layout from './Layouts/Layout';
 import AuthLayout from './Layouts/AuthLayout';
 import ErrorPage from './pages/ErrorPage';
@@ -17,9 +16,9 @@ export const routes = createRoutesFromElements(
       <Route index element={<HomePage />} loader={homeLoader} />
     </Route>
 
-    <Route path="auth" element={<AuthLayout />} errorElement={<ErrorPage />}>
-      <Route path="login" element={<LoginPage />} loader={requireGuest} />
-      <Route path="register" element={<RegisterPage />} loader={requireGuest} />
+    <Route path="auth" element={<AuthLayout />} loader={authLoader} errorElement={<ErrorPage />}>
+      <Route path="login" element={<LoginPage />} />
+      <Route path="register" element={<RegisterPage />} />
     </Route>
 
     <Route path="account" element={<Layout />} errorElement={<ErrorPage />}>

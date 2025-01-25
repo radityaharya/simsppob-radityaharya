@@ -1,38 +1,39 @@
-import { redirect } from 'react-router-dom';
 import { store } from '../store/reducers/store';
 import { clearAuth } from '~/store/reducers/membership';
+import { getProfile } from '~/store/actions/membership';
 
 export async function requireAuth() {
-  const state = store.getState();
+  const { loading, isAuthenticated, token } = store.getState().membership;
 
-  if (state.membership.loading) {
+  if (loading) return null;
+  if (!isAuthenticated || !token) {
+    store.dispatch(clearAuth());
+    window.location.href = '/auth/login';
     return null;
   }
 
-  const token = state.membership.token;
-
-  if (!token) {
-    throw redirect('/auth/login');
+  try {
+    await store.dispatch(getProfile()).unwrap();
+    return null;
+  } catch {
+    store.dispatch(clearAuth());
+    window.location.href = '/auth/login';
+    return null;
   }
-
-  return null;
 }
 
 export async function requireGuest() {
-  const state = store.getState();
-
-  if (state.membership.loading) {
+  const { loading, isAuthenticated } = store.getState().membership;
+  if (loading) return null;
+  if (isAuthenticated) {
+    window.location.href = '/';
     return null;
   }
-
-  if (state.membership.isAuthenticated) {
-    throw redirect('/');
-  }
-
   return null;
 }
 
-export async function logout() {
+export const logout = () => {
   store.dispatch(clearAuth());
-  return redirect('/auth/login');
-}
+  window.location.href = '/auth/login';
+  return null;
+};

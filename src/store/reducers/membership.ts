@@ -28,7 +28,9 @@ const membershipSlice = createSlice({
     clearAuth: state => {
       state.isAuthenticated = false;
       state.token = null;
+      state.profile = null;
       state.loading = false;
+      state.error = null;
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;

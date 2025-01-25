@@ -80,7 +80,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="flex h-full min-h-screen">
+    <div className="flex h-full">
       <div className="w-full sm:w-1/2 bg-background flex flex-col items-center justify-center p-8 gap-2 relative">
         <AuthLogo />
 
