@@ -14,6 +14,12 @@ export const API_ENDPOINTS = {
     banner: '/banner',
     services: '/services',
   },
+  transaction: {
+    balance: '/balance',
+    topup: '/topup',
+    transaction: '/transaction',
+    transactionHistory: '/transaction/history',
+  },
 };
 
 export const apiClient = axios.create({

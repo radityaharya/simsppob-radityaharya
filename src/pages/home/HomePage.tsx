@@ -8,10 +8,20 @@ import { RootState } from '@/store/reducers/store';
 
 export default function HomePage() {
   const [showBalance, setShowBalance] = useState(false);
-  const { profile, loading } = useSelector((state: RootState) => state.membership);
-  const { services, banners } = useSelector((state: RootState) => state.information);
+  const { profile, loading: membershipLoading } = useSelector(
+    (state: RootState) => state.membership
+  );
+  const {
+    services,
+    banners,
+    loading: informationLoading,
+  } = useSelector((state: RootState) => state.information);
+  const { balance: rawBalance, loading: transactionLoading } = useSelector(
+    (state: RootState) => state.transaction
+  );
 
-  if (loading) {
+  // TODO: better loading state
+  if (membershipLoading || informationLoading || transactionLoading) {
     return <div>Loading...</div>;
   }
 
@@ -30,6 +40,11 @@ export default function HomePage() {
     .join('')
     .slice(0, 2)
     .toUpperCase();
+
+  const balance = new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+  }).format(rawBalance ?? 0);
 
   return (
     <div className="max-w-screen overflow-x-hidden">
@@ -58,7 +73,7 @@ export default function HomePage() {
                 </p>
                 <h3 className="text-2xl sm:text-4xl font-bold" aria-labelledby="balance-label">
                   {/* TODO: */}
-                  {showBalance ? 'Rp 1.000.000' : 'Rp • • • • • • • •'}
+                  {showBalance ? balance : 'Rp • • • • • • • •'}
                 </h3>
               </div>
               <div>
@@ -104,7 +119,9 @@ export default function HomePage() {
 
       <section className="relative w-screen mx-auto" aria-label="Promotional Banners">
         <div className="max-w-7xl mx-auto mb-4">
-          <h2 className="text-base sm:text-lg px-4 sm:px-6 font-medium">Temukan promo menarik</h2>
+          <h2 className="text-base sm:text-lg mx-auto px-4 sm:px-6 font-medium">
+            Temukan promo menarik
+          </h2>
         </div>
         <div
           className="overflow-x-auto"
@@ -112,7 +129,7 @@ export default function HomePage() {
           aria-label="Scroll through promotional banners"
         >
           {/* TODO: scroll styling */}
-          <div className="flex gap-4 px-4 sm:px-[calc((100vw-1280px)/2)]">
+          <div className="flex gap-4 px-4 sm:px-[calc((100vw-1230px)/2)]">
             {banners.map(banner => (
               <Card
                 key={banner.banner_name}
