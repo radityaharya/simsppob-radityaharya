@@ -11,10 +11,12 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import membership from './membership';
+import information from './information';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 const rootReducer = combineReducers({
   membership,
+  information,
 });
 
 const persistedReducer = persistReducer(

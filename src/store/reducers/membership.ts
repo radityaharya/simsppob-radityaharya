@@ -1,12 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AuthState } from '../../types/auth';
-import { loginUser, registerUser } from '../actions/membership';
+import { AuthState, Profile } from '../../types/auth';
+import {
+  getProfile,
+  loginUser,
+  registerUser,
+  updateProfile,
+  updateProfileImage,
+} from '../actions/membership';
 
 const initialState: AuthState = {
   isAuthenticated: false,
   token: null,
   loading: true,
   error: null,
+  profile: null,
 };
 
 const membershipSlice = createSlice({
@@ -28,6 +35,12 @@ const membershipSlice = createSlice({
     },
     clearError: state => {
       state.error = null;
+    },
+    setProfile: (state, action: PayloadAction<Profile>) => {
+      state.profile = action.payload;
+    },
+    clearProfile: state => {
+      state.profile = null;
     },
   },
   extraReducers: builder => {
@@ -67,9 +80,39 @@ const membershipSlice = createSlice({
           loading: false,
           error: null,
         };
+      })
+      .addCase(getProfile.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        if (action.payload) {
+          state.profile = action.payload;
+        }
+      })
+      .addCase(getProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        if (action.payload) {
+          state.profile = action.payload;
+        }
+      })
+      .addCase(updateProfileImage.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        if (action.payload) {
+          state.profile = action.payload;
+        }
       });
   },
 });
 
-export const { setAuth, clearAuth, setLoading, clearError } = membershipSlice.actions;
+export const { setAuth, clearAuth, setLoading, clearError, setProfile, clearProfile } =
+  membershipSlice.actions;
 export default membershipSlice.reducer;

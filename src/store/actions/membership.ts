@@ -10,7 +10,7 @@ export const loginUser = createAsyncThunk<
   string,
   z.infer<typeof MembershipSchemas.login.body>,
   { state: RootState; rejectValue: string }
->('membership/login', async (credentials, { rejectWithValue }) => {
+>('membership/login', async (credentials, { rejectWithValue, dispatch }) => {
   try {
     const response = await apiClient.post(API_ENDPOINTS.membership.login, credentials);
     const validated = MembershipSchemas.login.response.parse(response.data);
@@ -26,6 +26,8 @@ export const loginUser = createAsyncThunk<
     if (!validated.data.token) {
       return rejectWithValue('No token received');
     }
+
+    await dispatch(getProfile());
 
     return validated.data.token;
   } catch (error: any) {

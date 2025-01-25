@@ -7,29 +7,30 @@ const Header: React.FC = () => {
 
   const getLinkClass = (path: string) => {
     const isActive = useMatch(path)?.pathname === location.pathname;
-    return `inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-      isActive
-        ? 'border-blue-500 text-blue-600'
-        : 'border-transparent text-gray-600 hover:text-gray-800 hover:border-gray-300'
+    return `inline-flex items-center px-1 pt-1 text-sm font-medium ${
+      isActive ? 'text-red-600' : 'text-foreground hover:text-gray-800 hover:border-gray-300'
     }`;
   };
 
   return (
-    <header className="bg-white shadow-sm">
+    <header className="bg-white shadow-sm sticky top-0 z-50">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
-          <div className="flex items-center">
-            <div className="flex-shrink-0 flex items-center">
+          <div className="flex-shrink-0 flex items-center">
+            <Link to="/">
               <Logo />
-            </div>
-            <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              <Link to="/" className={getLinkClass('/')}>
-                Home
-              </Link>
-              <Link to="/about" className={getLinkClass('/about')}>
-                About
-              </Link>
-            </div>
+            </Link>
+          </div>
+          <div className="flex items-center space-x-4 sm:space-x-8">
+            <Link to="/topup" className={getLinkClass('/topup')}>
+              Topup
+            </Link>
+            <Link to="/transaksi" className={getLinkClass('/transaksi')}>
+              Transaksi
+            </Link>
+            <Link to="/akun" className={getLinkClass('/akun')}>
+              Akun
+            </Link>
           </div>
         </div>
       </nav>
