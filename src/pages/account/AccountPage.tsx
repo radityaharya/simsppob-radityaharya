@@ -223,7 +223,7 @@ export default function AccountPage() {
                   className="w-full"
                   onClick={() => setIsEdit(false)}
                 >
-                  Batal
+                  Batalkan
                 </Button>
                 <Button
                   type="submit"
@@ -236,24 +236,26 @@ export default function AccountPage() {
             ) : (
               <Button
                 type="button"
-                className="w-full outline outline-red-500 text-red-500 hover:bg-red-500 hover:text-white"
+                className="w-full"
                 onClick={() => setIsEdit(true)}
-                variant="outline"
+                variant="default"
               >
-                Edit Profile
+                Edit Profil
               </Button>
             )}
           </form>
         </Form>
 
-        <Button
-          type="button"
-          variant="outline"
-          className="border-red-500 text-primary w-full mt-4 hover:bg-red-500 hover:text-white"
-          onClick={handleLogout}
-        >
-          Logout
-        </Button>
+        {!isEdit && (
+          <Button
+            type="button"
+            variant="outline"
+            className="border-red-500 text-primary w-full mt-4 hover:bg-red-500 hover:text-white"
+            onClick={handleLogout}
+          >
+            Logout
+          </Button>
+        )}
       </div>
     </div>
   );
